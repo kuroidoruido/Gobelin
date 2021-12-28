@@ -1,2 +1,2 @@
-# Gebelin
-Gebelin is a text based personal accounting system.
+# Gobelin
+Gobelin is a text based personal accounting system.
