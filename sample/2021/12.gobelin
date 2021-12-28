@@ -4,32 +4,31 @@
 
 ### Compte principal
 
-07/12 -    19.99 Mobile [telecom]
-05/12 -    29.99 Internet [telecom]
-02/12 + 1 800.67 Salaire [salaire]
-02/12 -   500    épagne 1 [<=>]
-02/12 -   850    compte joint décembre [<=>]
+02/12 + 1 800.67 Salaire                      [salaire]
+02/12 -   500    épagne 1                     [<=>]
+02/12 -   850    compte joint décembre        [<=>]
+05/12 -    29.99 Internet                     [telecom]
+07/12 -    19.99 Mobile                       [telecom]
 
 ### Livret 1
 
-02/12 +   500    épagne 1 [<=>]
+02/12 +   500    épagne 1                     [<=>]
 
 ### Livret 2
 
 
 ### Compte joint
 
-02/12 +   850    compte joint décembre [<=>]
-02/12 +   520    compte joint décembre Chloé
-07/12 -   780.42 Loyer appartement [logement]
-07/12 -    60    Loyer box [logement]
-21/12 -   250    Voiture [voiture]
-10/12 -    80    courses [courses]
+02/12 +   850    compte joint décembre        [<=>]
+02/12 +   520    compte joint décembre Chloé 
+07/12 -   780.42 Loyer appartement            [logement]
+07/12 -    60    Loyer box                    [logement]
+10/12 -    80    courses                      [courses]
+21/12 -   250    Voiture                      [voiture]
 
-## Soldes
+## Balance
 
 - Compte principal =    400.69
 - Livret 1         =  8 000
 - Livret 2         = 15 000
 - Compte joint     =    110
-

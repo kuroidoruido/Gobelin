@@ -1,0 +1,17 @@
+[general]
+locale = "FR"
+
+[accounts]
+
+[accounts.1]
+name = "Compte principal"
+
+[accounts.2]
+name = "Livret 1"
+
+[accounts.3]
+name = "Livret 2"
+
+[accounts.4]
+name = "Compte joint"
+
