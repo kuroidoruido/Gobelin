@@ -1,3 +1,4 @@
+use libgobelin::Locale;
 use std::path::PathBuf;
 use structopt::StructOpt;
 
@@ -18,6 +19,14 @@ pub enum Command {
     Fmt {
         #[structopt(parse(from_os_str))]
         files: Vec<PathBuf>,
+        #[structopt(short, long)]
+        verbose: bool,
+    },
+    Init {
+        #[structopt(long)]
+        locale: Option<Locale>,
+        #[structopt(short = "-a", long = "--account")]
+        accounts: Vec<String>,
         #[structopt(short, long)]
         verbose: bool,
     },

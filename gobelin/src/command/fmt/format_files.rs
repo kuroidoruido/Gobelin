@@ -3,14 +3,19 @@ use std::fs::{write, File};
 use std::io::prelude::*;
 use std::path::PathBuf;
 
-pub fn format_files(config: &Config, files: &Vec<PathBuf>, verbose: bool) -> Result<(), String> {
+pub fn format_files(
+    config: &Result<Config, String>,
+    files: &Vec<PathBuf>,
+    verbose: bool,
+) -> Result<(), String> {
+    let config = config.clone()?;
     if files.is_empty() {
         return Err(String::from(
             "You should specify at least one file to the fmt command.",
         ));
     }
     for file in files.iter() {
-        reformat(config, file, verbose)?;
+        reformat(&config, file, verbose)?;
     }
     Ok(())
 }

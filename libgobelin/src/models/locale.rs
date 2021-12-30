@@ -1,7 +1,31 @@
+use std::default::Default;
+use std::str::FromStr;
+
 #[derive(Clone, Copy, Debug, PartialEq)]
 pub enum Locale {
     FR,
     EN,
+}
+
+impl FromStr for Locale {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        match s.to_lowercase().as_str() {
+            "fr" => Ok(Locale::FR),
+            "en" => Ok(Locale::EN),
+            _ => Err(format!(
+                "Unknown locale '{}'. You should choose any of these locale: EN, FR",
+                s
+            )),
+        }
+    }
+}
+
+impl Default for Locale {
+    fn default() -> Self {
+        Self::EN
+    }
 }
 
 pub fn parse_month_word(s: &str) -> Result<u32, String> {
@@ -60,5 +84,12 @@ pub fn format_month_word(month: u32, locale: Locale) -> Result<String, String> {
             12 => Ok(String::from("December")),
             _ => unknown_month(month),
         },
+    }
+}
+
+pub fn main_account_name(locale: Locale) -> String {
+    match locale {
+        Locale::FR => String::from("Compte principal"),
+        Locale::EN => String::from("Main account"),
     }
 }

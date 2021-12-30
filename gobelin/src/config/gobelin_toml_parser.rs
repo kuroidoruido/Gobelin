@@ -56,7 +56,7 @@ impl AccountConfigDef {
     }
 }
 
-pub fn parse_config(base_path: Option<PathBuf>) -> Result<Config, String> {
+pub fn parse_config(base_path: &Option<PathBuf>) -> Result<Config, String> {
     let base_path: String = match base_path {
         Some(path) => String::from(path.to_str().unwrap()),
         None => String::from("."),

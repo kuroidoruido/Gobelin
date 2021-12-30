@@ -36,7 +36,8 @@ pub fn format_transactions(res: &mut String, file: &GobelinFile) {
         .max()
         .or(Some(0))
         .unwrap();
-    let amount_padding = amount_padding + amount_padding / 3;
+    let amount_padding =
+        amount_padding + (amount_padding - if amount_padding > 0 { 1 } else { 0 }) / 3;
     let description_padding = file
         .transactions
         .iter()
