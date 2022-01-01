@@ -30,4 +30,20 @@ pub enum Command {
         #[structopt(short, long)]
         verbose: bool,
     },
+    Add {
+        #[structopt(subcommand)]
+        add_cmd: AddCommand,
+    },
+}
+
+#[derive(Clone, Copy, Debug, StructOpt)]
+pub enum AddCommand {
+    Month {
+        #[structopt(parse(try_from_str))]
+        year: i32,
+        #[structopt(parse(try_from_str))]
+        month: u32,
+        #[structopt(short, long)]
+        verbose: bool,
+    },
 }

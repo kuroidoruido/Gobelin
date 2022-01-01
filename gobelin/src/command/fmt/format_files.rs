@@ -3,12 +3,7 @@ use std::fs::{write, File};
 use std::io::prelude::*;
 use std::path::PathBuf;
 
-pub fn format_files(
-    config: &Result<Config, String>,
-    files: &Vec<PathBuf>,
-    verbose: bool,
-) -> Result<(), String> {
-    let config = config.clone()?;
+pub fn format_files(config: &Config, files: &Vec<PathBuf>, verbose: bool) -> Result<(), String> {
     if files.is_empty() {
         return Err(String::from(
             "You should specify at least one file to the fmt command.",

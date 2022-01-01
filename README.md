@@ -71,6 +71,30 @@ gobelin init -v
 gobelin init --verbose
 ```
 
+### add month
+
+This command will create specified month.
+
+Note 1: the previous month should exists.
+Note 2: if the spefified month already exists, nothing will be done.
+
+Example:
+
+```sh
+gobelin add month 2021 12
+```
+
+#### verbose
+
+This will give some indication about what Gobelin will do.
+
+Example:
+
+```sh
+gobelin add month 2021 12 -v
+gobelin add month 2021 12 --verbose
+```
+
 
 ### fmt
 

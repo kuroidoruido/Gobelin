@@ -56,7 +56,7 @@ impl AccountConfigDef {
     }
 }
 
-pub fn parse_config(base_path: &Option<PathBuf>) -> Result<Config, String> {
+pub fn parse_config(base_path: &Option<PathBuf>) -> Result<(Config, String), String> {
     let base_path: String = match base_path {
         Some(path) => String::from(path.to_str().unwrap()),
         None => String::from("."),
@@ -75,5 +75,5 @@ pub fn parse_config(base_path: &Option<PathBuf>) -> Result<Config, String> {
             config_file_path, e
         )
     })?;
-    Ok(config.to_config())
+    Ok((config.to_config(), base_path))
 }

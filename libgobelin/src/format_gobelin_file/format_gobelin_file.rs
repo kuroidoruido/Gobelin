@@ -84,7 +84,13 @@ pub fn format_transactions(res: &mut String, file: &GobelinFile) {
 
 pub fn format_balance(res: &mut String, file: &GobelinFile) {
     res.push_str("## Balance\n\n");
-    let name_padding = file.balance.iter().map(|b| b.name.len()).max().unwrap();
+    let name_padding = file
+        .balance
+        .iter()
+        .map(|b| b.name.len())
+        .max()
+        .or(Some(0))
+        .unwrap();
     let amount_padding = file
         .balance
         .iter()
@@ -92,7 +98,12 @@ pub fn format_balance(res: &mut String, file: &GobelinFile) {
         .max()
         .or(Some(0))
         .unwrap();
-    let amount_padding = amount_padding + (amount_padding - 1) / 3;
+    let amount_padding = amount_padding
+        + if amount_padding > 1 {
+            (amount_padding - 1) / 3
+        } else {
+            0
+        };
     for balance in file.balance.iter() {
         res.push_str(
             format!(
