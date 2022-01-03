@@ -3,7 +3,6 @@ use serde::Deserialize;
 use std::collections::BTreeMap;
 use std::fs::read_to_string;
 use std::path::PathBuf;
-use toml;
 
 #[derive(Deserialize, Debug)]
 pub struct ConfigDef {
@@ -15,7 +14,7 @@ pub struct ConfigDef {
 impl ConfigDef {
     fn to_config(&self) -> Config {
         Config {
-            general: self.general.clone(),
+            general: self.general,
             accounts: self
                 .accounts
                 .iter()

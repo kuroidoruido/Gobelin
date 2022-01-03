@@ -9,20 +9,20 @@ pub fn add_month_file(
     month: u32,
     verbose: bool,
 ) -> Result<(), String> {
-    let new_month_file = forge_year_month_file_name(&base_path, year, month);
+    let new_month_file = forge_year_month_file_name(base_path.clone(), year, month);
     if new_month_file.exists() {
         if verbose {
             println!(
                 "Nothing to do. The file {:?} already exists.",
-                new_month_file.clone()
+                new_month_file
             );
         }
         return Ok(());
     }
 
-    let previous_month = get_previous_month(&config, &base_path, year, month);
+    let previous_month = get_previous_month(config, base_path, year, month);
     let new_month_content = match previous_month {
-        Ok(previous_month) => create_month_file(&config, &previous_month, year, month),
+        Ok(previous_month) => create_month_file(config, &previous_month, year, month),
         Err(e) => Err(e),
     }?;
 
@@ -42,15 +42,15 @@ pub fn add_month_file(
     Ok(())
 }
 
-fn forge_year_month_file_name(base_path: &String, year: i32, month: u32) -> PathBuf {
-    [base_path.clone(), format!("{}/{}.gobelin", year, month)]
+fn forge_year_month_file_name(base_path: String, year: i32, month: u32) -> PathBuf {
+    [base_path, format!("{}/{}.gobelin", year, month)]
         .iter()
         .collect::<PathBuf>()
 }
 
 fn get_previous_month(
     config: &Config,
-    base_path: &String,
+    base_path: String,
     year: i32,
     month: u32,
 ) -> Result<GobelinFile, String> {
@@ -66,7 +66,7 @@ fn get_previous_month(
     if !previous_month_file.exists() {
         return Err(format!(
             "Cannot find previous month (expected here: {:?}), so cannot create next month.",
-            previous_month_file.clone()
+            previous_month_file
         ));
     }
     let previous_month = fs::read_to_string(previous_month_file.clone()).map_err(|e| {
@@ -76,5 +76,5 @@ fn get_previous_month(
             e
         )
     })?;
-    parse_gobelin_file(&config, &previous_month)
+    parse_gobelin_file(config, previous_month)
 }

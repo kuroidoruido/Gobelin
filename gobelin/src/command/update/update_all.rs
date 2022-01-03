@@ -1,20 +1,17 @@
-use libgobelin::{Config,update_all_files};
+use libgobelin::{update_all_files, Config};
 use std::collections::BTreeMap;
 use std::fs;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 pub fn update_all(root: &Option<PathBuf>, config: &Config, verbose: bool) -> Result<(), String> {
-    let root = root.clone().or(Some(PathBuf::from("."))).unwrap();
+    let root = root.clone().or_else(|| Some(PathBuf::from("."))).unwrap();
     let gobelin_files = read_all_gobelin_files(&root, verbose)?;
-    let updated_files = update_all_files(config,&gobelin_files)?;
-    write_all_gobelin_files(&gobelin_files, &updated_files,verbose)?;
+    let updated_files = update_all_files(config, &gobelin_files)?;
+    write_all_gobelin_files(&gobelin_files, &updated_files, verbose)?;
     Ok(())
 }
 
-fn read_all_gobelin_files(
-    root: &PathBuf,
-    verbose: bool,
-) -> Result<BTreeMap<String, String>, String> {
+fn read_all_gobelin_files(root: &Path, verbose: bool) -> Result<BTreeMap<String, String>, String> {
     // expected structure is:
     // - one directory for each years at root
     // - in each year's directory, one file for each months
@@ -54,16 +51,21 @@ fn read_all_gobelin_files(
         }
     }
 
-    return Ok(files);
+    Ok(files)
 }
 
-fn write_all_gobelin_files(actual_files: &BTreeMap<String, String>,files: &BTreeMap<String, String>, verbose: bool) -> Result<(),String> {
+fn write_all_gobelin_files(
+    actual_files: &BTreeMap<String, String>,
+    files: &BTreeMap<String, String>,
+    verbose: bool,
+) -> Result<(), String> {
     for (file_path, file_content) in files.iter() {
         if actual_files.get(file_path).unwrap() == file_content {
             println!("{} already up to date", file_path);
             continue;
         }
-        fs::write(file_path, file_content).map_err(|e| format!("Cannot write file {:?}: {:?}", file_path.clone(),e))?;
+        fs::write(file_path, file_content)
+            .map_err(|e| format!("Cannot write file {:?}: {:?}", file_path.clone(), e))?;
         if verbose {
             println!("{} updated", file_path);
         }

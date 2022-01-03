@@ -145,7 +145,7 @@ fn should_parse_formatted_file() {
         ],
     };
 
-    assert_eq!(parse_gobelin_file(&config, &file), Ok(expected));
+    assert_eq!(parse_gobelin_file(&config, file), Ok(expected));
 }
 
 #[test]
@@ -288,7 +288,7 @@ fn should_parse_not_formatted_file() {
         ],
     };
 
-    assert_eq!(parse_gobelin_file(&config, &file), Ok(expected));
+    assert_eq!(parse_gobelin_file(&config, file), Ok(expected));
 }
 
 #[test]
@@ -408,5 +408,5 @@ fn should_parse_file_with_only_transaction() {
         balance: vec![],
     };
 
-    assert_eq!(parse_gobelin_file(&config, &file), Ok(expected));
+    assert_eq!(parse_gobelin_file(&config, file), Ok(expected));
 }

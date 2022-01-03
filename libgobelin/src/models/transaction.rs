@@ -44,7 +44,7 @@ fn parse_date(date: &str) -> Result<NaiveDate, <Transaction as FromStr>::Err> {
         if let Ok(month) = parsed_month {
             let parsed_day = day.parse::<u32>();
             if let Ok(day) = parsed_day {
-                return Ok(NaiveDate::from_ymd(1, month, day));
+                Ok(NaiveDate::from_ymd(1, month, day))
             } else {
                 Err(format!("Cannot day as u32 '{}'", day))
             }

@@ -5,11 +5,11 @@ use std::path::PathBuf;
 
 pub fn init_directory(
     root: &Option<PathBuf>,
-    accounts: &Vec<String>,
+    accounts: &[String],
     locale: Option<Locale>,
     verbose: bool,
 ) -> Result<(), String> {
-    let root = root.clone().or(Some(PathBuf::from("."))).unwrap();
+    let root = root.clone().or_else(|| Some(PathBuf::from("."))).unwrap();
     if !root.exists() {
         fs::create_dir_all(root.clone())
             .map_err(|e| format!("Cannot create root directory {:?}", e))?;

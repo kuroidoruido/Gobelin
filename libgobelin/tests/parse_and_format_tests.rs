@@ -115,7 +115,7 @@ fn formatted_file_should_be_parseable() {
     let config = sample_config();
     let file = sample();
     assert_eq!(
-        parse_gobelin_file(&config, &format_gobelin_file(&config, &file).unwrap()),
+        parse_gobelin_file(&config, format_gobelin_file(&config, &file).unwrap()),
         Ok(file)
     );
 }
@@ -125,12 +125,21 @@ fn formatting_should_be_consistent_over_parse_and_format_operation() {
     let config = sample_config();
     let file = sample();
     let formatted_1 = format_gobelin_file(&config, &file).unwrap();
-    let formatted_2 =
-        format_gobelin_file(&config, &parse_gobelin_file(&config, &formatted_1).unwrap()).unwrap();
-    let formatted_3 =
-        format_gobelin_file(&config, &parse_gobelin_file(&config, &formatted_2).unwrap()).unwrap();
-    let formatted_4 =
-        format_gobelin_file(&config, &parse_gobelin_file(&config, &formatted_3).unwrap()).unwrap();
+    let formatted_2 = format_gobelin_file(
+        &config,
+        &parse_gobelin_file(&config, formatted_1.clone()).unwrap(),
+    )
+    .unwrap();
+    let formatted_3 = format_gobelin_file(
+        &config,
+        &parse_gobelin_file(&config, formatted_2.clone()).unwrap(),
+    )
+    .unwrap();
+    let formatted_4 = format_gobelin_file(
+        &config,
+        &parse_gobelin_file(&config, formatted_3.clone()).unwrap(),
+    )
+    .unwrap();
 
     assert_eq!(formatted_2, formatted_1);
     assert_eq!(formatted_3, formatted_1);

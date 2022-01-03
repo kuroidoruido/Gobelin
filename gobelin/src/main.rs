@@ -18,7 +18,7 @@ fn main() -> Result<(), String> {
         .or(Some(Command::Update { verbose: false }))
         .unwrap();
     match cmd {
-        Command::Add { add_cmd } => add_sub_command(opt.root.clone(), add_cmd),
+        Command::Add { add_cmd } => add_sub_command(opt.root, add_cmd),
         Command::Fmt { files, verbose } => {
             let (config, _) = parse_config(&opt.root)?;
             format_files(&config, &files, verbose)
@@ -44,6 +44,6 @@ fn add_sub_command(base_path: Option<PathBuf>, cmd: AddCommand) -> Result<(), St
             year,
             month,
             verbose,
-        } => add_month_file(&config, base_path.clone(), year, month, verbose),
+        } => add_month_file(&config, base_path, year, month, verbose),
     }
 }

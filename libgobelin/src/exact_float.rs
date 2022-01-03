@@ -39,7 +39,7 @@ impl ExactFloat {
 
     pub fn abs(&self) -> Self {
         if self.numerator >= 0 {
-            self.clone()
+            *self
         } else {
             ExactFloat {
                 numerator: self.numerator.abs(),
