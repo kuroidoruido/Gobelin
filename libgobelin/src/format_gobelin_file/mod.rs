@@ -10,7 +10,7 @@ use format_transactions::format_transactions;
 pub fn format_gobelin_file(config: &Config, file: &GobelinFile) -> Result<String, String> {
     let mut res = String::default();
     format_month(&mut res, file, config.general.locale)?;
-    format_transactions(&mut res, file);
+    format_transactions(config, &mut res, file);
     format_balance(&mut res, file);
     Ok(res)
 }

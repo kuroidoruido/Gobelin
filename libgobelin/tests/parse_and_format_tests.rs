@@ -1,7 +1,8 @@
 use chrono::NaiveDate;
 use libgobelin::{
-    format_gobelin_file, parse_gobelin_file, AccountConfig, Balance, Config, ExactFloat,
-    GeneralConfig, GobelinFile, Locale, Transaction, TransactionBucket,
+    format_gobelin_file, parse_gobelin_file, AccountConfig, Balance, Config,
+    EmptyTransactionConfig, ExactFloat, GeneralConfig, GobelinFile, Locale, Transaction,
+    TransactionBucket,
 };
 
 fn sample_config() -> Config {
@@ -10,15 +11,19 @@ fn sample_config() -> Config {
         accounts: vec![
             AccountConfig {
                 name: String::from("Main account"),
+                empty_transaction: EmptyTransactionConfig::default(),
             },
             AccountConfig {
                 name: String::from("Savings account 1"),
+                empty_transaction: EmptyTransactionConfig::default(),
             },
             AccountConfig {
                 name: String::from("Savings account 2"),
+                empty_transaction: EmptyTransactionConfig::default(),
             },
             AccountConfig {
                 name: String::from("Shared account"),
+                empty_transaction: EmptyTransactionConfig::default(),
             },
         ],
     }

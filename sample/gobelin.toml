@@ -11,6 +11,7 @@ name = "Livret 1"
 
 [accounts.3]
 name = "Livret 2"
+empty_transaction = "Hide"
 
 [accounts.4]
 name = "Compte joint"

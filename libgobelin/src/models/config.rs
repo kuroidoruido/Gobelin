@@ -1,4 +1,5 @@
 use crate::models::Locale;
+use std::default::Default;
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Config {
@@ -14,4 +15,17 @@ pub struct GeneralConfig {
 #[derive(Clone, Debug, PartialEq)]
 pub struct AccountConfig {
     pub name: String,
+    pub empty_transaction: EmptyTransactionConfig,
+}
+
+#[derive(Clone, Copy, Debug, PartialEq)]
+pub enum EmptyTransactionConfig {
+    Show,
+    Hide,
+}
+
+impl Default for EmptyTransactionConfig {
+    fn default() -> Self {
+        Self::Show
+    }
 }

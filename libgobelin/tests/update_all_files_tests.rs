@@ -1,4 +1,6 @@
-use libgobelin::{update_all_files, AccountConfig, Config, GeneralConfig, Locale};
+use libgobelin::{
+    update_all_files, AccountConfig, Config, EmptyTransactionConfig, GeneralConfig, Locale,
+};
 use std::collections::BTreeMap;
 
 #[test]
@@ -8,9 +10,11 @@ fn it_should_compute_all_balances() {
         accounts: vec![
             AccountConfig {
                 name: String::from("Main account"),
+                empty_transaction: EmptyTransactionConfig::default(),
             },
             AccountConfig {
                 name: String::from("Savings account"),
+                empty_transaction: EmptyTransactionConfig::default(),
             },
         ],
     };

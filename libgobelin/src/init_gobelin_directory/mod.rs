@@ -1,6 +1,6 @@
 use crate::{
-    format_gobelin_file, main_account_name, AccountConfig, Balance, Config, ExactFloat,
-    GeneralConfig, GobelinFile, Locale, Transaction, TransactionBucket,
+    format_gobelin_file, main_account_name, AccountConfig, Balance, Config, EmptyTransactionConfig,
+    ExactFloat, GeneralConfig, GobelinFile, Locale, Transaction, TransactionBucket,
 };
 use chrono::NaiveDate;
 use std::collections::BTreeMap;
@@ -68,7 +68,10 @@ fn build_month_file(
         accounts: accounts
             .iter()
             .cloned()
-            .map(|name| AccountConfig { name })
+            .map(|name| AccountConfig {
+                name,
+                empty_transaction: EmptyTransactionConfig::default(),
+            })
             .collect(),
     };
     let file = GobelinFile {

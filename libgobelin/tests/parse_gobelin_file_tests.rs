@@ -1,7 +1,7 @@
 use chrono::NaiveDate;
 use libgobelin::{
-    parse_gobelin_file, AccountConfig, Balance, Config, ExactFloat, GeneralConfig, GobelinFile,
-    Locale, Transaction, TransactionBucket,
+    parse_gobelin_file, AccountConfig, Balance, Config, EmptyTransactionConfig, ExactFloat,
+    GeneralConfig, GobelinFile, Locale, Transaction, TransactionBucket,
 };
 
 #[test]
@@ -11,15 +11,19 @@ fn should_parse_formatted_file() {
         accounts: vec![
             AccountConfig {
                 name: String::from("Compte principal"),
+                empty_transaction: EmptyTransactionConfig::default(),
             },
             AccountConfig {
                 name: String::from("Livret 1"),
+                empty_transaction: EmptyTransactionConfig::default(),
             },
             AccountConfig {
                 name: String::from("Livret 2"),
+                empty_transaction: EmptyTransactionConfig::default(),
             },
             AccountConfig {
                 name: String::from("Compte joint"),
+                empty_transaction: EmptyTransactionConfig::default(),
             },
         ],
     };
@@ -155,15 +159,19 @@ fn should_parse_not_formatted_file() {
         accounts: vec![
             AccountConfig {
                 name: String::from("Compte principal"),
+                empty_transaction: EmptyTransactionConfig::default(),
             },
             AccountConfig {
                 name: String::from("Livret 1"),
+                empty_transaction: EmptyTransactionConfig::default(),
             },
             AccountConfig {
                 name: String::from("Livret 2"),
+                empty_transaction: EmptyTransactionConfig::default(),
             },
             AccountConfig {
                 name: String::from("Compte joint"),
+                empty_transaction: EmptyTransactionConfig::default(),
             },
         ],
     };
@@ -298,15 +306,19 @@ fn should_parse_file_with_only_transaction() {
         accounts: vec![
             AccountConfig {
                 name: String::from("Compte principal"),
+                empty_transaction: EmptyTransactionConfig::default(),
             },
             AccountConfig {
                 name: String::from("Livret 1"),
+                empty_transaction: EmptyTransactionConfig::default(),
             },
             AccountConfig {
                 name: String::from("Livret 2"),
+                empty_transaction: EmptyTransactionConfig::default(),
             },
             AccountConfig {
                 name: String::from("Compte joint"),
+                empty_transaction: EmptyTransactionConfig::default(),
             },
         ],
     };

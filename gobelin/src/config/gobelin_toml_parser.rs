@@ -1,4 +1,4 @@
-use libgobelin::{AccountConfig, Config, GeneralConfig, Locale};
+use libgobelin::{AccountConfig, Config, EmptyTransactionConfig, GeneralConfig, Locale};
 use serde::Deserialize;
 use std::collections::BTreeMap;
 use std::fs::read_to_string;
@@ -42,17 +42,33 @@ enum LocaleDef {
     EN,
 }
 
-#[derive(Deserialize, Clone, Debug)]
+#[derive(Deserialize, Debug)]
 pub struct AccountConfigDef {
     pub name: String,
+    pub empty_transaction: Option<EmptyTransactionConfigDef>,
 }
 
 impl AccountConfigDef {
     fn to_account_config(&self) -> AccountConfig {
         AccountConfig {
             name: self.name.clone(),
+            empty_transaction: self
+                .empty_transaction
+                .clone()
+                .map(|x| match x {
+                    EmptyTransactionConfigDef::Show => EmptyTransactionConfig::Show,
+                    EmptyTransactionConfigDef::Hide => EmptyTransactionConfig::Hide,
+                })
+                .or_else(|| Some(EmptyTransactionConfig::default()))
+                .unwrap(),
         }
     }
+}
+
+#[derive(Deserialize, Clone, Debug)]
+pub enum EmptyTransactionConfigDef {
+    Show,
+    Hide,
 }
 
 pub fn parse_config(base_path: &Option<PathBuf>) -> Result<(Config, String), String> {

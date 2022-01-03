@@ -1,7 +1,7 @@
 use chrono::NaiveDate;
 use libgobelin::{
-    create_month_file, AccountConfig, Balance, Config, ExactFloat, GeneralConfig, GobelinFile,
-    Locale,
+    create_month_file, AccountConfig, Balance, Config, EmptyTransactionConfig, ExactFloat,
+    GeneralConfig, GobelinFile, Locale,
 };
 
 #[test]
@@ -76,9 +76,11 @@ fn it_should_use_config_account_list_to_create_transactions_sections() {
         accounts: vec![
             AccountConfig {
                 name: String::from("Main account"),
+                empty_transaction: EmptyTransactionConfig::default(),
             },
             AccountConfig {
                 name: String::from("Savings account"),
+                empty_transaction: EmptyTransactionConfig::default(),
             },
         ],
     };
@@ -116,9 +118,11 @@ fn it_should_create_new_month_correctly() {
         accounts: vec![
             AccountConfig {
                 name: String::from("Main account"),
+                empty_transaction: EmptyTransactionConfig::default(),
             },
             AccountConfig {
                 name: String::from("Savings account"),
+                empty_transaction: EmptyTransactionConfig::default(),
             },
         ],
     };

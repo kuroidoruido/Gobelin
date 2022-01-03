@@ -12,7 +12,7 @@ pub fn create_month_file(
         transactions: config
             .accounts
             .iter()
-            .map(|AccountConfig { name }| TransactionBucket {
+            .map(|AccountConfig { name, .. }| TransactionBucket {
                 name: name.clone(),
                 transactions: Vec::new(),
             })

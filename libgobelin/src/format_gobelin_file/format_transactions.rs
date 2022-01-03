@@ -1,6 +1,6 @@
-use crate::GobelinFile;
+use crate::{Config, EmptyTransactionConfig, GobelinFile, TransactionBucket};
 
-pub fn format_transactions(res: &mut String, file: &GobelinFile) {
+pub fn format_transactions(config: &Config, res: &mut String, file: &GobelinFile) {
     res.push_str("## Transactions\n\n");
     let amount_padding = file
         .transactions
@@ -23,6 +23,9 @@ pub fn format_transactions(res: &mut String, file: &GobelinFile) {
         .or(Some(0))
         .unwrap();
     for bucket in file.transactions.iter() {
+        if should_skip_transaction_bucket(config, bucket) {
+            continue;
+        }
         res.push_str(format!("### {}\n\n", bucket.name).as_str());
         for transaction in bucket.transactions.iter() {
             let tag = if transaction.tag.is_some() {
@@ -57,4 +60,15 @@ pub fn format_transactions(res: &mut String, file: &GobelinFile) {
         }
         res.push('\n');
     }
+}
+
+fn should_skip_transaction_bucket(config: &Config, bucket: &TransactionBucket) -> bool {
+    bucket.transactions.is_empty()
+        && config
+            .accounts
+            .iter()
+            .find(|b| b.name == bucket.name)
+            .map(|ac| ac.empty_transaction == EmptyTransactionConfig::Hide)
+            .or_else(|| Some(false))
+            .unwrap()
 }
