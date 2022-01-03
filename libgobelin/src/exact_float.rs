@@ -37,6 +37,7 @@ impl ExactFloat {
         format!("{}", self.numerator.abs()).chars().count()
     }
 
+    #[must_use]
     pub fn abs(&self) -> Self {
         if self.numerator >= 0 {
             *self
@@ -62,7 +63,7 @@ impl FromStr for ExactFloat {
 
     fn from_str(s: &str) -> Result<Self, <Self as FromStr>::Err> {
         let s = s.replace(" ", "");
-        if let Some((numerator, denominator)) = s.split_once(".") {
+        if let Some((numerator, denominator)) = s.split_once('.') {
             if let Ok(numerator) = numerator.parse::<i32>() {
                 if let Ok(denominator) = denominator.parse::<u8>() {
                     Ok(ExactFloat::new(numerator, denominator))

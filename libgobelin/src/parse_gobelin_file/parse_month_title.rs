@@ -2,7 +2,7 @@ use crate::parse_month_word;
 use chrono::NaiveDate;
 
 pub fn parse_month_title(s: &str) -> Result<NaiveDate, String> {
-    if let Some((month, year)) = s[1..].trim().split_once(" ") {
+    if let Some((month, year)) = s[1..].trim().split_once(' ') {
         if let Ok(year) = year.parse::<i32>() {
             let month = parse_month_word(month)?;
             Ok(NaiveDate::from_ymd(year, month, 1))

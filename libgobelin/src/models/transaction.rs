@@ -39,7 +39,7 @@ impl FromStr for Transaction {
     }
 }
 fn parse_date(date: &str) -> Result<NaiveDate, <Transaction as FromStr>::Err> {
-    if let Some((day, month)) = date.split_once("/") {
+    if let Some((day, month)) = date.split_once('/') {
         let parsed_month = month.parse::<u32>();
         if let Ok(month) = parsed_month {
             let parsed_day = day.parse::<u32>();
