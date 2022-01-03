@@ -1,0 +1,114 @@
+name: Rust
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  pull_request:
+
+jobs:
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup | Checkout
+        uses: actions/checkout@v2
+      - name: Setup | Rust
+        uses: ATiltedTree/setup-rust@v1
+        with:
+          rust-version: nightly
+          components: clippy
+      - name: Build | Lint
+        run: cargo clippy
+  compile:
+    name: Compile
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup | Checkout
+        uses: actions/checkout@v2
+      - name: Setup | Rust
+        uses: ATiltedTree/setup-rust@v1
+        with:
+          rust-version: nightly
+      - name: Build | Compile
+        run: cargo check
+  test:
+    name: Test
+    strategy:
+      matrix:
+        os:
+        - ubuntu-latest
+        - windows-latest
+        # - macOS-latest
+        rust:
+          # - stable
+          # - beta
+          - nightly
+    runs-on: ${{ matrix.os }}
+    needs: [compile]
+    steps:
+      - name: Setup | Checkout
+        uses: actions/checkout@v2
+      - name: Setup | Rust
+        uses: ATiltedTree/setup-rust@v1
+        with:
+          rust-version: ${{ matrix.rust }}
+      - name: Build | Compile
+        run: cargo test
+  package:
+    name: Package
+    strategy:
+      matrix:
+        os:
+        - ubuntu-latest
+        - windows-latest
+        # - macOS-latest
+        rust:
+          - stable
+          # - beta
+          - nightly
+    runs-on: ${{ matrix.os }}
+    needs: [test]
+    steps:
+      - name: Setup | Checkout
+        uses: actions/checkout@v2
+
+      - name: Get the version
+        id: get_version
+        shell: bash
+        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+
+      - name: Setup | Rust
+        uses: ATiltedTree/setup-rust@v1
+        with:
+          rust-version: ${{ matrix.rust }}
+
+      - name: Build | Compile
+        run: cargo build --release --locked
+
+      - name: Create Archive
+        shell: bash
+        if: matrix.os != 'windows-latest'
+        run: |
+          cp target/release/gobelin target/release/gobelin-${{ steps.get_version.outputs.VERSION }}-${{ matrix.os }}
+      - name: Create Archive (Windows)
+        if: matrix.os == 'windows-latest'
+        run: |
+          Copy-Item -Path "target/release/gobelin.exe" -Destination "target/release/gobelin-${{ steps.get_version.outputs.VERSION }}-${{ matrix.os }}.exe"
+
+      - name: Upload assets
+        uses: softprops/action-gh-release@v1
+        if: matrix.os != 'windows-latest'
+        with:
+          files: |
+            target/release/gobelin-${{ steps.get_version.outputs.VERSION }}-${{ matrix.os }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload assets (Windows)
+        uses: softprops/action-gh-release@v1
+        if: matrix.os == 'windows-latest'
+        with:
+          files: |
+            target/release/gobelin-${{ steps.get_version.outputs.VERSION }}-${{ matrix.os }}.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
