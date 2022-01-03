@@ -28,9 +28,10 @@ pub fn format_balance_by_category(res: &mut String, file: &GobelinFile) {
     for balance in file.balance_by_category.iter() {
         res.push_str(
             format!(
-                "- {: <name_pad$} = {: >amount_pad$}\n",
+                "- {: <name_pad$} = {} {: >amount_pad$}\n",
                 balance.name,
-                format!("{}", balance.amount),
+                balance.amount.sign(),
+                format!("{}", balance.amount.abs()),
                 name_pad = name_padding,
                 amount_pad = (amount_padding + if balance.amount.denominator > 0 { 3 } else { 0 })
             )

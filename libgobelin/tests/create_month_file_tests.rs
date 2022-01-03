@@ -64,8 +64,8 @@ fn it_should_reuse_previous_month_balance() {
 
 ## Balance
 
-- Main account    = 111.11
-- Savings account = 222.22
+- Main account    = + 111.11
+- Savings account = + 222.22
 ",
     );
     assert_eq!(actual, expected);
@@ -161,8 +161,8 @@ fn it_should_create_new_month_correctly() {
 
 ## Balance
 
-- Main account    = 111.11
-- Savings account = 222.22
+- Main account    = + 111.11
+- Savings account = + 222.22
 ",
     );
     assert_eq!(actual, expected);

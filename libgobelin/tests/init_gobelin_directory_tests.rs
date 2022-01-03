@@ -125,7 +125,7 @@ mod month_file {
 
 ## Balance
 
-- Main account = 100.01
+- Main account = + 100.01
 "
             ))
         );
@@ -148,7 +148,7 @@ mod month_file {
 
 ## Balance
 
-- Compte principal = 100.01
+- Compte principal = + 100.01
 "
             ))
         );
@@ -176,8 +176,8 @@ mod month_file {
 
 ## Balance
 
-- Compte principal = 100.01
-- Livret 1         = 100.02
+- Compte principal = + 100.01
+- Livret 1         = + 100.02
 "
             ))
         );
@@ -205,8 +205,8 @@ mod month_file {
 
 ## Balance
 
-- Compte principal = 100.01
-- Livret 1         = 100.02
+- Compte principal = + 100.01
+- Livret 1         = + 100.02
 "
             ))
         );

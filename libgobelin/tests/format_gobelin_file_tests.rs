@@ -36,7 +36,7 @@ fn it_should_format_correctly_minimal_file() {
 
 ## Balance
 
-- Compte principal = 400.69
+- Compte principal = + 400.69
 ",
     );
     assert_eq!(format_gobelin_file(&config, &file), Ok(expected));
@@ -80,8 +80,8 @@ fn it_should_format_balance_with_correct_padding() {
 
 ## Balance
 
-- Compte principal =   400.69
-- Livret 1         = 1 400.69
+- Compte principal = +   400.69
+- Livret 1         = + 1 400.69
 ",
     );
     assert_eq!(format_gobelin_file(&config, &file), Ok(expected));
@@ -225,10 +225,10 @@ fn it_should_format_correctly_realistic_file() {
 
 ## Balance
 
-- Compte principal =    400.69
-- Livret 1         =  8 000
-- Livret 2         = 15 000
-- Compte joint     =    110
+- Compte principal = +    400.69
+- Livret 1         = +  8 000
+- Livret 2         = + 15 000
+- Compte joint     = +    110
 ",
     );
     assert_eq!(format_gobelin_file(&config, &file), Ok(expected));
@@ -323,8 +323,8 @@ fn it_should_format_correctly_realistic_file_2() {
 
 ## Balance
 
-- Main account    = 1 650.02
-- Savings account = 1 200
+- Main account    = + 1 650.02
+- Savings account = + 1 200
 ",
     );
     assert_eq!(format_gobelin_file(&config, &file), Ok(expected));
@@ -426,9 +426,9 @@ fn it_should_format_ignoring_accounts_without_transactions_when_config_empty_tra
 
 ## Balance
 
-- Main account      = 1 650.02
-- Savings account 1 = 1 200
-- Savings account 2 = 1 200
+- Main account      = + 1 650.02
+- Savings account 1 = + 1 200
+- Savings account 2 = + 1 200
 ",
     );
     assert_eq!(format_gobelin_file(&config, &file), Ok(expected));
@@ -530,14 +530,14 @@ fn it_should_format_correctly_balance_by_category() {
 
 ## Balance
 
-- Main account      = 1 650.02
-- Savings account 1 = 1 200
-- Savings account 2 = 1 200
+- Main account      = + 1 650.02
+- Savings account 1 = + 1 200
+- Savings account 2 = + 1 200
 
 ## Balance by category
 
-- salary  = 1 800
-- telecom =   -49.98
+- salary  = + 1 800
+- telecom = -    49.98
 ",
     );
     assert_eq!(format_gobelin_file(&config, &file), Ok(expected));
