@@ -290,3 +290,123 @@ fn should_parse_not_formatted_file() {
 
     assert_eq!(parse_gobelin_file(&config, &file), Ok(expected));
 }
+
+#[test]
+fn should_parse_file_with_only_transaction() {
+    let config = Config {
+        general: GeneralConfig { locale: Locale::FR },
+        accounts: vec![
+            AccountConfig {
+                name: String::from("Compte principal"),
+            },
+            AccountConfig {
+                name: String::from("Livret 1"),
+            },
+            AccountConfig {
+                name: String::from("Livret 2"),
+            },
+            AccountConfig {
+                name: String::from("Compte joint"),
+            },
+        ],
+    };
+    let file = String::from(
+        "# Décembre 2021
+
+## Transactions
+
+### Compte principal
+
+07/12 -    19.99 Mobile                [telecom]
+05/12 -    29.99 Internet              [telecom]
+02/12 + 1 800.67 Salaire               [salaire]
+02/12 -   500    Épagne 1              [<=>]
+02/12 -   850    compte joint décembre [<=>]
+
+### Livret 1
+
+02/12 +   500    épagne 1              [<=>]
+
+### Livret 2
+
+
+### Compte joint
+
+02/12 +   850    compte joint décembre [<=>]
+02/12 +   520    compte joint décembre
+07/12 -   780.42 Loyer appartement     [logement]
+07/12 -    60    Loyer box             [logement]
+21/12 -   250    Voiture               [voiture]
+10/12 -    80    courses               [courses]
+
+",
+    );
+    let expected = GobelinFile {
+        month: NaiveDate::from_ymd(2021, 12, 1),
+        transactions: vec![
+            TransactionBucket {
+                name: String::from("Compte principal"),
+                transactions: vec![
+                    String::from("02/12 + 1 800.67 Salaire [salaire]")
+                        .parse::<Transaction>()
+                        .unwrap(),
+                    String::from("02/12 -   500    Épagne 1 [<=>]")
+                        .parse::<Transaction>()
+                        .unwrap(),
+                    String::from("02/12 -   850    compte joint décembre [<=>]")
+                        .parse::<Transaction>()
+                        .unwrap(),
+                    String::from("05/12 -    29.99 Internet [telecom]")
+                        .parse::<Transaction>()
+                        .unwrap(),
+                    String::from("07/12 -    19.99 Mobile [telecom]")
+                        .parse::<Transaction>()
+                        .unwrap(),
+                ],
+            },
+            TransactionBucket {
+                name: String::from("Livret 1"),
+                transactions: vec![String::from("02/12 +   500    épagne 1 [<=>]")
+                    .parse::<Transaction>()
+                    .unwrap()],
+            },
+            TransactionBucket {
+                name: String::from("Livret 2"),
+                transactions: vec![],
+            },
+            TransactionBucket {
+                name: String::from("Compte joint"),
+                transactions: vec![
+                    String::from("02/12 +   850    compte joint décembre [<=>]")
+                        .parse::<Transaction>()
+                        .unwrap(),
+                    String::from("02/12 +   520    compte joint décembre")
+                        .parse::<Transaction>()
+                        .unwrap(),
+                    String::from("07/12 -   780.42 Loyer appartement [logement]")
+                        .parse::<Transaction>()
+                        .unwrap(),
+                    String::from("07/12 -    60    Loyer box [logement]")
+                        .parse::<Transaction>()
+                        .unwrap(),
+                    String::from("10/12 -    80    courses [courses]")
+                        .parse::<Transaction>()
+                        .unwrap(),
+                    String::from("21/12 -   250    Voiture [voiture]")
+                        .parse::<Transaction>()
+                        .unwrap(),
+                ],
+            },
+        ],
+        tags: vec![
+            String::from("courses"),
+            String::from("logement"),
+            String::from("salaire"),
+            String::from("telecom"),
+            String::from("voiture"),
+        ],
+        balance: vec![],
+    };
+
+    assert_eq!(parse_gobelin_file(&config, &file), Ok(expected));
+}
