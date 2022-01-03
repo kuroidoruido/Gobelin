@@ -15,6 +15,7 @@ fn it_should_use_year_and_month() {
         transactions: Vec::new(),
         tags: Vec::new(),
         balance: Vec::new(),
+        balance_by_category: Vec::new(),
     };
 
     let actual = create_month_file(&config, &previous_month, 2021, 2).unwrap();
@@ -51,6 +52,7 @@ fn it_should_reuse_previous_month_balance() {
                 amount: ExactFloat::new(222, 22),
             },
         ],
+        balance_by_category: Vec::new(),
     };
 
     let actual = create_month_file(&config, &previous_month, 2021, 12).unwrap();
@@ -89,6 +91,7 @@ fn it_should_use_config_account_list_to_create_transactions_sections() {
         transactions: Vec::new(),
         tags: Vec::new(),
         balance: Vec::new(),
+        balance_by_category: Vec::new(),
     };
 
     let actual = create_month_file(&config, &previous_month, 2021, 12).unwrap();
@@ -140,6 +143,7 @@ fn it_should_create_new_month_correctly() {
                 amount: ExactFloat::new(222, 22),
             },
         ],
+        balance_by_category: Vec::new(),
     };
 
     let actual = create_month_file(&config, &previous_month, 2022, 1).unwrap();

@@ -1,4 +1,5 @@
 use crate::{format_gobelin_file, parse_gobelin_file, Balance, Config, ExactFloat};
+use itertools::Itertools;
 use std::collections::BTreeMap;
 
 pub fn update_all_files(
@@ -47,6 +48,31 @@ pub fn update_all_files(
                 }
             })
             .collect();
+
+        current_file.balance_by_category = current_file
+            .transactions
+            .iter()
+            .flat_map(|bucket| bucket.transactions.clone())
+            .filter(|t| {
+                t.tag
+                    .clone()
+                    .map(|t| t != String::from("<=>"))
+                    .or_else(|| Some(true))
+                    .unwrap()
+            })
+            .group_by(|transaction| {
+                transaction
+                    .tag
+                    .clone()
+                    .or_else(|| Some(String::from("default")))
+                    .unwrap()
+            })
+            .into_iter()
+            .map(|(tag, group)| Balance {
+                name: tag,
+                amount: group.into_iter().map(|t| t.amount).sum(),
+            })
+            .collect::<Vec<_>>();
 
         update_files.insert(
             file_path.clone(),

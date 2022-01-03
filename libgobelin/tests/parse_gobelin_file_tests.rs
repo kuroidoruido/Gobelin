@@ -147,6 +147,7 @@ fn should_parse_formatted_file() {
                 amount: ExactFloat::new(110, 0),
             },
         ],
+        balance_by_category: Vec::new(),
     };
 
     assert_eq!(parse_gobelin_file(&config, file), Ok(expected));
@@ -294,6 +295,189 @@ fn should_parse_not_formatted_file() {
                 amount: ExactFloat::new(110, 0),
             },
         ],
+        balance_by_category: Vec::new(),
+    };
+
+    assert_eq!(parse_gobelin_file(&config, file), Ok(expected));
+}
+
+#[test]
+fn should_parse_file_with_balance_by_category() {
+    let config = Config {
+        general: GeneralConfig { locale: Locale::FR },
+        accounts: vec![
+            AccountConfig {
+                name: String::from("Compte principal"),
+                empty_transaction: EmptyTransactionConfig::default(),
+            },
+            AccountConfig {
+                name: String::from("Livret 1"),
+                empty_transaction: EmptyTransactionConfig::default(),
+            },
+            AccountConfig {
+                name: String::from("Livret 2"),
+                empty_transaction: EmptyTransactionConfig::default(),
+            },
+            AccountConfig {
+                name: String::from("Compte joint"),
+                empty_transaction: EmptyTransactionConfig::default(),
+            },
+        ],
+    };
+    let file = String::from(
+        "# December 2021
+
+## Transactions
+
+###  Main account
+
+07/12 -19.99 Phone [telecom]
+05/12 -29.99 Internet [telecom]
+02/12 +1800.67 Salary [salary]
+02/12 -500 saving 1 [<=>]
+02/12 -850 Shared account décembre [<=>]
+
+### Savings account 1
+02/12 +500 saving 1 [<=>]
+
+### Savings account 2
+
+
+### Shared account
+
+02/12 +850 Shared account décembre [<=>]
+02/12 +520 Shared account décembre
+07/12 -780.42 apartment rent [home]
+07/12 -60 box rent [home]
+21/12 -250 Car [car]
+10/12 -80 Shopping [food]
+
+## Balance
+
+- Main account = 400.69
+- Savings account 1= 8 000
+- Savings account 2 =15 000
+- Shared account=110
+
+## Balance by category
+
+- salary = 1 800.67
+- telecom = -49.98
+- default = 520
+- home = -840.42
+- car = -250
+- food = -80
+
+",
+    );
+    let expected = GobelinFile {
+        month: NaiveDate::from_ymd(2021, 12, 1),
+        transactions: vec![
+            TransactionBucket {
+                name: String::from("Main account"),
+                transactions: vec![
+                    String::from("02/12 + 1 800.67 Salary [salary]")
+                        .parse::<Transaction>()
+                        .unwrap(),
+                    String::from("02/12 -   500    saving 1 [<=>]")
+                        .parse::<Transaction>()
+                        .unwrap(),
+                    String::from("02/12 -   850    Shared account décembre [<=>]")
+                        .parse::<Transaction>()
+                        .unwrap(),
+                    String::from("05/12 -    29.99 Internet [telecom]")
+                        .parse::<Transaction>()
+                        .unwrap(),
+                    String::from("07/12 -    19.99 Phone [telecom]")
+                        .parse::<Transaction>()
+                        .unwrap(),
+                ],
+            },
+            TransactionBucket {
+                name: String::from("Savings account 1"),
+                transactions: vec![String::from("02/12 +   500    saving 1 [<=>]")
+                    .parse::<Transaction>()
+                    .unwrap()],
+            },
+            TransactionBucket {
+                name: String::from("Savings account 2"),
+                transactions: vec![],
+            },
+            TransactionBucket {
+                name: String::from("Shared account"),
+                transactions: vec![
+                    String::from("02/12 +   850    Shared account décembre [<=>]")
+                        .parse::<Transaction>()
+                        .unwrap(),
+                    String::from("02/12 +   520    Shared account décembre")
+                        .parse::<Transaction>()
+                        .unwrap(),
+                    String::from("07/12 -   780.42 apartment rent [home]")
+                        .parse::<Transaction>()
+                        .unwrap(),
+                    String::from("07/12 -    60    box rent [home]")
+                        .parse::<Transaction>()
+                        .unwrap(),
+                    String::from("10/12 -    80    Shopping [food]")
+                        .parse::<Transaction>()
+                        .unwrap(),
+                    String::from("21/12 -   250    Car [car]")
+                        .parse::<Transaction>()
+                        .unwrap(),
+                ],
+            },
+        ],
+        tags: vec![
+            String::from("car"),
+            String::from("food"),
+            String::from("home"),
+            String::from("salary"),
+            String::from("telecom"),
+        ],
+        balance: vec![
+            Balance {
+                name: String::from("Main account"),
+                amount: ExactFloat::new(400, 69),
+            },
+            Balance {
+                name: String::from("Savings account 1"),
+                amount: ExactFloat::new(8000, 0),
+            },
+            Balance {
+                name: String::from("Savings account 2"),
+                amount: ExactFloat::new(15000, 0),
+            },
+            Balance {
+                name: String::from("Shared account"),
+                amount: ExactFloat::new(110, 0),
+            },
+        ],
+        balance_by_category: vec![
+            Balance {
+                name: String::from("salary"),
+                amount: ExactFloat::new(1800, 67),
+            },
+            Balance {
+                name: String::from("default"),
+                amount: ExactFloat::new(520, 0),
+            },
+            Balance {
+                name: String::from("telecom"),
+                amount: ExactFloat::new(-49, 98),
+            },
+            Balance {
+                name: String::from("food"),
+                amount: ExactFloat::new(-80, 0),
+            },
+            Balance {
+                name: String::from("car"),
+                amount: ExactFloat::new(-250, 0),
+            },
+            Balance {
+                name: String::from("home"),
+                amount: ExactFloat::new(-840, 42),
+            },
+        ],
     };
 
     assert_eq!(parse_gobelin_file(&config, file), Ok(expected));
@@ -418,6 +602,7 @@ fn should_parse_file_with_only_transaction() {
             String::from("voiture"),
         ],
         balance: vec![],
+        balance_by_category: Vec::new(),
     };
 
     assert_eq!(parse_gobelin_file(&config, file), Ok(expected));

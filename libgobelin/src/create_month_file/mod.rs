@@ -19,6 +19,7 @@ pub fn create_month_file(
             .collect(),
         tags: Vec::new(),
         balance: previous_month.balance.clone(),
+        balance_by_category: Vec::new(),
     };
     format_gobelin_file(config, &new_month)
 }

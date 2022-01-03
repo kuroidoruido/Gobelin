@@ -1,9 +1,10 @@
+use std::cmp::{Ord, Ordering, PartialOrd};
 use std::fmt::Display;
 use std::iter::Sum;
 use std::ops::Add;
 use std::str::FromStr;
 
-#[derive(Clone, Copy, Debug, PartialEq)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq)]
 pub struct ExactFloat {
     /**
      * Will store integer part of the floating point number.
@@ -55,6 +56,13 @@ impl ExactFloat {
         } else {
             "-"
         }
+    }
+
+    fn full(&self) -> i64 {
+        let self_sign: i64 = if self.sign() == "+" { 1 } else { -1 };
+        let self_full: i64 = (self.numerator * 100).into();
+        let self_denominator: i64 = self.denominator.into();
+        self_full + self_sign * self_denominator
     }
 }
 
@@ -110,14 +118,8 @@ impl Add for ExactFloat {
     type Output = Self;
 
     fn add(self, other: Self) -> Self {
-        let self_sign: i64 = if self.sign() == "+" { 1 } else { -1 };
-        let self_full: i64 = (self.numerator * 100).into();
-        let self_denominator: i64 = self.denominator.into();
-        let self_full: i64 = self_full + self_sign * self_denominator;
-        let other_sign: i64 = if other.sign() == "+" { 1 } else { -1 };
-        let other_full: i64 = (other.numerator * 100).into();
-        let other_denominator: i64 = other.denominator.into();
-        let other_full: i64 = other_full + other_sign * other_denominator;
+        let self_full: i64 = self.full();
+        let other_full: i64 = other.full();
         let full: i64 = self_full + other_full;
         let numerator: i32 = (full / 100).try_into().unwrap_or(0);
         let denominator: u8 = (full.abs() % 100).try_into().unwrap_or(0);
@@ -134,5 +136,20 @@ impl Sum for ExactFloat {
         I: Iterator<Item = Self>,
     {
         iter.fold(ExactFloat::new(0, 0), |total, current| total + current)
+    }
+}
+
+impl Ord for ExactFloat {
+    fn cmp(&self, other: &Self) -> Ordering {
+        let self_full: i64 = self.full();
+        let other_full: i64 = other.full();
+        self_full.cmp(&other_full)
+    }
+}
+impl PartialOrd for ExactFloat {
+    fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
+        let self_full: i64 = self.full();
+        let other_full: i64 = other.full();
+        Some(self_full.cmp(&other_full))
     }
 }

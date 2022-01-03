@@ -1,10 +1,12 @@
 mod compute_tags;
 mod parse_balance;
+mod parse_balance_by_category;
 mod parse_month_title;
 mod parse_transactions;
 
 use crate::parse_gobelin_file::compute_tags::compute_tags;
 use crate::parse_gobelin_file::parse_balance::parse_balance;
+use crate::parse_gobelin_file::parse_balance_by_category::parse_balance_by_category;
 use crate::parse_gobelin_file::parse_month_title::parse_month_title;
 use crate::parse_gobelin_file::parse_transactions::parse_transactions;
 use crate::{Config, GobelinFile};
@@ -25,6 +27,8 @@ pub fn parse_gobelin_file(config: &Config, file: String) -> Result<GobelinFile, 
 
     let balance = parse_balance(config, &mut file);
 
+    let balance_by_category = parse_balance_by_category(&mut file);
+
     // tags contains every tags used for transactions
     let tags = compute_tags(&transactions);
 
@@ -33,5 +37,6 @@ pub fn parse_gobelin_file(config: &Config, file: String) -> Result<GobelinFile, 
         transactions,
         tags,
         balance,
+        balance_by_category,
     })
 }

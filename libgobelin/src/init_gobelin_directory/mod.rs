@@ -74,25 +74,26 @@ fn build_month_file(
             })
             .collect(),
     };
+    let transactions: Vec<TransactionBucket> = accounts
+        .iter()
+        .cloned()
+        .enumerate()
+        .map(|(i, name)| {
+            let decimal: u8 = (i % 100).try_into().unwrap();
+            TransactionBucket {
+                name,
+                transactions: vec![Transaction {
+                    date: NaiveDate::from_ymd(year, month, 1),
+                    amount: ExactFloat::new(100, decimal + 1),
+                    description: init_amount(locale),
+                    tag: Some(String::from("<=>")),
+                }],
+            }
+        })
+        .collect();
     let file = GobelinFile {
         month: NaiveDate::from_ymd(year, month, 1),
-        transactions: accounts
-            .iter()
-            .cloned()
-            .enumerate()
-            .map(|(i, name)| {
-                let decimal: u8 = (i % 100).try_into().unwrap();
-                TransactionBucket {
-                    name,
-                    transactions: vec![Transaction {
-                        date: NaiveDate::from_ymd(year, month, 1),
-                        amount: ExactFloat::new(100, decimal + 1),
-                        description: init_amount(locale),
-                        tag: Some(String::from("<=>")),
-                    }],
-                }
-            })
-            .collect(),
+        transactions: transactions.clone(),
         tags: Vec::new(),
         balance: accounts
             .iter()
@@ -106,6 +107,7 @@ fn build_month_file(
                 }
             })
             .collect(),
+        balance_by_category: Vec::new(),
     };
     format_gobelin_file(&config, &file)
 }

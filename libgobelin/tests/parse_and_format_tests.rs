@@ -112,6 +112,32 @@ fn sample() -> GobelinFile {
                 amount: ExactFloat::new(110, 0),
             },
         ],
+        balance_by_category: vec![
+            Balance {
+                name: String::from("salary"),
+                amount: ExactFloat::new(1800, 67),
+            },
+            Balance {
+                name: String::from("default"),
+                amount: ExactFloat::new(520, 0),
+            },
+            Balance {
+                name: String::from("telecom"),
+                amount: ExactFloat::new(-49, 98),
+            },
+            Balance {
+                name: String::from("food"),
+                amount: ExactFloat::new(-80, 0),
+            },
+            Balance {
+                name: String::from("car"),
+                amount: ExactFloat::new(-250, 0),
+            },
+            Balance {
+                name: String::from("home"),
+                amount: ExactFloat::new(-840, 42),
+            },
+        ],
     }
 }
 

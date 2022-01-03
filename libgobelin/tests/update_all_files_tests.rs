@@ -136,6 +136,10 @@ fn it_should_compute_all_balances() {
 
 - Main account    =   100
 - Savings account = 1 000
+
+## Balance by category
+
+- default = 1 100
 ",
             ),
         ),
@@ -161,6 +165,11 @@ fn it_should_compute_all_balances() {
 
 - Main account    = 1 650.02
 - Savings account = 1 200
+
+## Balance by category
+
+- salary  = 1 800
+- telecom =   -49.98
 ",
             ),
         ),
@@ -186,6 +195,11 @@ fn it_should_compute_all_balances() {
 
 - Main account    = 3 200.04
 - Savings account = 1 400
+
+## Balance by category
+
+- salary  = 1 800
+- telecom =   -49.98
 ",
             ),
         ),
@@ -211,6 +225,11 @@ fn it_should_compute_all_balances() {
 
 - Main account    = 4 750.06
 - Savings account = 1 600
+
+## Balance by category
+
+- salary  = 1 800
+- telecom =   -49.98
 ",
             ),
         ),

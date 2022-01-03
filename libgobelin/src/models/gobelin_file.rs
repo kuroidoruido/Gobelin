@@ -7,4 +7,5 @@ pub struct GobelinFile {
     pub transactions: Vec<TransactionBucket>,
     pub tags: Vec<String>,
     pub balance: Vec<Balance>,
+    pub balance_by_category: Vec<Balance>,
 }
