@@ -5,6 +5,7 @@ mod gobelin_opt;
 use crate::command::add::month::add_month_file;
 use crate::command::fmt::format_files;
 use crate::command::init::init_directory;
+use crate::command::update::update_all;
 use crate::config::parse_config;
 use crate::gobelin_opt::{AddCommand, Command, Opt};
 use std::path::PathBuf;
@@ -12,7 +13,11 @@ use structopt::StructOpt;
 
 fn main() -> Result<(), String> {
     let opt = Opt::from_args();
-    match opt.cmd {
+    let cmd = opt
+        .cmd
+        .or(Some(Command::Update { verbose: false }))
+        .unwrap();
+    match cmd {
         Command::Add { add_cmd } => add_sub_command(opt.root.clone(), add_cmd),
         Command::Fmt { files, verbose } => {
             let (config, _) = parse_config(&opt.root)?;
@@ -23,6 +28,10 @@ fn main() -> Result<(), String> {
             locale,
             verbose,
         } => init_directory(&opt.root, &accounts, locale, verbose),
+        Command::Update { verbose } => {
+            let (config, _) = parse_config(&opt.root)?;
+            update_all(&opt.root, &config, verbose)
+        }
     }?;
 
     Ok(())

@@ -8,6 +8,8 @@ Gobelin is a text based personal accounting system.
 
 ## Gobelin usage
 
+If no command is specified, update command with default parameters is used.
+
 ### global parameters
 
 These parameters should be passed before any command.
@@ -118,5 +120,28 @@ Example:
 ```sh
 gobelin fmt 2021/12.gobelin -v
 gobelin fmt 2021/11.gobelin --verbose
+```
+
+### update
+
+This command will recompute all balances.
+
+Note: if a file is up to date, it will not be rewritten or edited.
+
+Example:
+
+```sh
+gobelin update
+```
+
+#### verbose
+
+This will give some indication about what Gobelin will do.
+
+Example:
+
+```sh
+gobelin update -v
+gobelin update --verbose
 ```
 

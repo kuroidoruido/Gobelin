@@ -41,7 +41,7 @@ pub fn format_transactions(res: &mut String, file: &GobelinFile) {
     let description_padding = file
         .transactions
         .iter()
-        .flat_map(|b| b.transactions.iter().map(|t| t.description.len()))
+        .flat_map(|b| b.transactions.iter().map(|t| t.description.chars().count()))
         .max()
         .or(Some(0))
         .unwrap();
@@ -73,7 +73,7 @@ pub fn format_transactions(res: &mut String, file: &GobelinFile) {
                     } else {
                         3
                     },
-                    description_padding = description_padding - 1,
+                    description_padding = description_padding,
                 )
                 .as_str(),
             );
@@ -82,7 +82,7 @@ pub fn format_transactions(res: &mut String, file: &GobelinFile) {
     }
 }
 
-pub fn format_balance(res: &mut String, file: &GobelinFile) {
+fn format_balance(res: &mut String, file: &GobelinFile) {
     res.push_str("## Balance\n\n");
     let name_padding = file
         .balance

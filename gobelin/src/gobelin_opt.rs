@@ -11,7 +11,7 @@ pub struct Opt {
     #[structopt(parse(from_os_str))]
     pub root: Option<PathBuf>,
     #[structopt(subcommand)]
-    pub cmd: Command,
+    pub cmd: Option<Command>,
 }
 
 #[derive(Debug, StructOpt)]
@@ -33,6 +33,10 @@ pub enum Command {
     Add {
         #[structopt(subcommand)]
         add_cmd: AddCommand,
+    },
+    Update {
+        #[structopt(short, long)]
+        verbose: bool,
     },
 }
 

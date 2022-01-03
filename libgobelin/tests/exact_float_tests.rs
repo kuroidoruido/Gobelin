@@ -201,3 +201,88 @@ mod sign {
         assert_eq!(ExactFloat::new(-1, 0).sign(), "-");
     }
 }
+
+mod add {
+    use super::*;
+
+    #[test]
+    fn it_should_add_two_positives_integer() {
+        let one = ExactFloat::new(1, 0);
+        let two = ExactFloat::new(2, 0);
+        let expected = ExactFloat::new(3, 0);
+        assert_eq!(one + two, expected);
+    }
+
+    #[test]
+    fn it_should_add_two_negatives_integer() {
+        let one = ExactFloat::new(-1, 0);
+        let two = ExactFloat::new(-2, 0);
+        let expected = ExactFloat::new(-3, 0);
+        assert_eq!(one + two, expected);
+    }
+
+    #[test]
+    fn it_should_add_one_positive_and_one_positive_integer() {
+        let one = ExactFloat::new(1, 0);
+        let two = ExactFloat::new(-2, 0);
+        let expected = ExactFloat::new(-1, 0);
+        assert_eq!(one + two, expected);
+    }
+
+    #[test]
+    fn it_should_add_two_positives_float() {
+        let one = ExactFloat::new(1, 3);
+        let two = ExactFloat::new(2, 8);
+        let expected = ExactFloat::new(3, 11);
+        assert_eq!(one + two, expected);
+    }
+
+    #[test]
+    fn it_should_add_two_negatives_float() {
+        let one = ExactFloat::new(-1, 3);
+        let two = ExactFloat::new(-2, 8);
+        let expected = ExactFloat::new(-3, 11);
+        assert_eq!(one + two, expected);
+    }
+
+    #[test]
+    fn it_should_add_one_positive_and_one_negative_float() {
+        let one = ExactFloat::new(1, 3);
+        let two = ExactFloat::new(-2, 8);
+        let expected = ExactFloat::new(-1, 5);
+        assert_eq!(one + two, expected);
+    }
+
+    #[test]
+    fn it_should_add_two_float_with_decimal_overflow() {
+        let one = ExactFloat::new(1, 33);
+        let two = ExactFloat::new(2, 88);
+        let expected = ExactFloat::new(4, 21);
+        assert_eq!(one + two, expected);
+    }
+    #[test]
+    fn it_should_add_two_float_with_decimal_overflow_2() {
+        let one = ExactFloat::new(995, 78);
+        let two = ExactFloat::new(20, 66);
+        let expected = ExactFloat::new(1016, 44);
+        assert_eq!(one + two, expected);
+    }
+}
+
+mod sum {
+    use super::*;
+
+    #[test]
+    fn it_should_sum_every_numbers() {
+        let numbers: Vec<ExactFloat> = vec![
+            ExactFloat::new(1000, 0),
+            ExactFloat::new(-2, 0),
+            ExactFloat::new(-2, 22),
+            ExactFloat::new(20, 66),
+        ];
+        assert_eq!(
+            numbers.iter().cloned().sum::<ExactFloat>(),
+            ExactFloat::new(1016, 44)
+        );
+    }
+}

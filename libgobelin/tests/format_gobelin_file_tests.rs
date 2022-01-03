@@ -224,3 +224,96 @@ fn it_should_format_correctly_realistic_file() {
     );
     assert_eq!(format_gobelin_file(&config, &file), Ok(expected));
 }
+
+#[test]
+fn it_should_format_correctly_realistic_file_2() {
+    let config = Config {
+        general: GeneralConfig { locale: Locale::EN },
+        accounts: vec![
+            AccountConfig {
+                name: String::from("Main account"),
+            },
+            AccountConfig {
+                name: String::from("Savings account"),
+            },
+        ],
+    };
+
+    let file = GobelinFile {
+        month: NaiveDate::from_ymd(2021, 11, 1),
+        transactions: vec![
+            TransactionBucket {
+                name: String::from("Main account"),
+                transactions: vec![
+                    Transaction {
+                        date: NaiveDate::from_ymd(1, 11, 1),
+                        amount: ExactFloat::new(1800, 0),
+                        description: String::from("salary"),
+                        tag: Some(String::from("salary")),
+                    },
+                    Transaction {
+                        date: NaiveDate::from_ymd(1, 11, 2),
+                        amount: ExactFloat::new(-200, 0),
+                        description: String::from("savings"),
+                        tag: Some(String::from("<=>")),
+                    },
+                    Transaction {
+                        date: NaiveDate::from_ymd(1, 11, 3),
+                        amount: ExactFloat::new(-29, 99),
+                        description: String::from("internet"),
+                        tag: Some(String::from("telecom")),
+                    },
+                    Transaction {
+                        date: NaiveDate::from_ymd(1, 11, 3),
+                        amount: ExactFloat::new(-19, 99),
+                        description: String::from("mobile"),
+                        tag: Some(String::from("telecom")),
+                    },
+                ],
+            },
+            TransactionBucket {
+                name: String::from("Savings account"),
+                transactions: vec![Transaction {
+                    date: NaiveDate::from_ymd(1, 11, 2),
+                    amount: ExactFloat::new(200, 0),
+                    description: String::from("savings"),
+                    tag: Some(String::from("<=>")),
+                }],
+            },
+        ],
+        tags: vec![String::from("salary"), String::from("telecom")],
+        balance: vec![
+            Balance {
+                name: String::from("Main account"),
+                amount: ExactFloat::new(1650, 2),
+            },
+            Balance {
+                name: String::from("Savings account"),
+                amount: ExactFloat::new(1200, 0),
+            },
+        ],
+    };
+    let expected = String::from(
+        "# November 2021
+
+## Transactions
+
+### Main account
+
+01/11 + 1 800    salary   [salary]
+02/11 -   200    savings  [<=>]
+03/11 -    29.99 internet [telecom]
+03/11 -    19.99 mobile   [telecom]
+
+### Savings account
+
+02/11 +   200    savings  [<=>]
+
+## Balance
+
+- Main account    = 1 650.02
+- Savings account = 1 200
+",
+    );
+    assert_eq!(format_gobelin_file(&config, &file), Ok(expected));
+}
