@@ -43,7 +43,7 @@ pub fn add_month_file(
 }
 
 fn forge_year_month_file_name(base_path: String, year: i32, month: u32) -> PathBuf {
-    [base_path, format!("{}/{}.gobelin", year, month)]
+    [base_path, format!("{}/{:0>2}.gobelin", year, month)]
         .iter()
         .collect::<PathBuf>()
 }
