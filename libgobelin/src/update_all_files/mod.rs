@@ -53,13 +53,7 @@ pub fn update_all_files(
             .transactions
             .iter()
             .flat_map(|bucket| bucket.transactions.clone())
-            .filter(|t| {
-                t.tag
-                    .clone()
-                    .map(|t| t != String::from("<=>"))
-                    .or_else(|| Some(true))
-                    .unwrap()
-            })
+            .filter(|t| t.tag.clone().map(|t| t != *"<=>").or(Some(true)).unwrap())
             .group_by(|transaction| {
                 transaction
                     .tag

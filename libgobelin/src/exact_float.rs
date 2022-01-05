@@ -72,7 +72,7 @@ impl FromStr for ExactFloat {
     type Err = String;
 
     fn from_str(s: &str) -> Result<Self, <Self as FromStr>::Err> {
-        let s = s.replace(" ", "");
+        let s = s.replace(' ', "");
         if let Some((numerator, denominator)) = s.split_once('.') {
             if let Ok(numerator) = numerator.parse::<i32>() {
                 if let Ok(denominator) = denominator.parse::<u8>() {

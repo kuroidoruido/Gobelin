@@ -93,7 +93,7 @@ fn build_month_file(
         .collect();
     let file = GobelinFile {
         month: NaiveDate::from_ymd(year, month, 1),
-        transactions: transactions.clone(),
+        transactions,
         tags: Vec::new(),
         balance: accounts
             .iter()

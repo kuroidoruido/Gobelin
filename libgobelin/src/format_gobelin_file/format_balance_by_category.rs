@@ -10,7 +10,7 @@ pub fn format_balance_by_category(res: &mut String, file: &GobelinFile) {
         .iter()
         .map(|b| b.amount.numerator.abs())
         .max()
-        .or_else(|| Some(0))
+        .or(Some(0))
         .unwrap();
     let name_padding = file
         .balance_by_category

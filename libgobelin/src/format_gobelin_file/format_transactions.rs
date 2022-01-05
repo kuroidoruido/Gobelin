@@ -69,6 +69,6 @@ fn should_skip_transaction_bucket(config: &Config, bucket: &TransactionBucket) -
             .iter()
             .find(|b| b.name == bucket.name)
             .map(|ac| ac.empty_transaction == EmptyTransactionConfig::Hide)
-            .or_else(|| Some(false))
+            .or(Some(false))
             .unwrap()
 }
