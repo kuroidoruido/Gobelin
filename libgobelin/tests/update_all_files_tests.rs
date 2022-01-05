@@ -139,7 +139,7 @@ fn it_should_compute_all_balances() {
 
 ## Balance by category
 
-- default = + 1 100
+- default = + 1 100    100%                     |████████████████████
 ",
             ),
         ),
@@ -168,8 +168,8 @@ fn it_should_compute_all_balances() {
 
 ## Balance by category
 
-- salary  = + 1 800
-- telecom = -    49.98
+- salary  = + 1 800    100%                     |████████████████████
+- telecom = -    49.98  -2%                     |                    
 ",
             ),
         ),
@@ -198,8 +198,8 @@ fn it_should_compute_all_balances() {
 
 ## Balance by category
 
-- salary  = + 1 800
-- telecom = -    49.98
+- salary  = + 1 800    100%                     |████████████████████
+- telecom = -    49.98  -2%                     |                    
 ",
             ),
         ),
@@ -228,8 +228,8 @@ fn it_should_compute_all_balances() {
 
 ## Balance by category
 
-- salary  = + 1 800
-- telecom = -    49.98
+- salary  = + 1 800    100%                     |████████████████████
+- telecom = -    49.98  -2%                     |                    
 ",
             ),
         ),

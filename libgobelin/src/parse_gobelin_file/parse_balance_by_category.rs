@@ -6,10 +6,17 @@ where
 {
     let mut balances: Vec<Balance> = Vec::new();
 
-    // file.next(); // skip "## Balance by category" title
-
     file.take_while(|x| x.starts_with('-'))
         .filter_map(|x| x[1..].split_once('='))
+        .filter_map(|(k, v)| {
+            if v.contains('%') {
+                v.trim()
+                    .split_once('%')
+                    .map(|(v, _)| (k, &v[..v.len() - 3]))
+            } else {
+                Some((k, v))
+            }
+        })
         .for_each(|(k, v)| {
             balances.push(Balance {
                 name: k.trim().to_string(),

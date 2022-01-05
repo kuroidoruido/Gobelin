@@ -73,7 +73,13 @@ pub fn update_all_files(
                 amount: group.into_iter().map(|t| t.amount).sum(),
             })
             .collect::<Vec<_>>();
-
+        current_file.balance_by_category.sort_by_key(|b| b.amount);
+        current_file.balance_by_category = current_file
+            .balance_by_category
+            .iter()
+            .rev()
+            .cloned()
+            .collect();
         update_files.insert(
             file_path.clone(),
             format_gobelin_file(config, &current_file)?,

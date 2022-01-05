@@ -2,6 +2,8 @@ use std::cmp::{Ord, Ordering, PartialOrd};
 use std::fmt::Display;
 use std::iter::Sum;
 use std::ops::Add;
+use std::ops::Div;
+use std::ops::Mul;
 use std::str::FromStr;
 
 #[derive(Clone, Copy, Debug, Eq, PartialEq)]
@@ -121,6 +123,29 @@ impl Add for ExactFloat {
         let self_full: i64 = self.full();
         let other_full: i64 = other.full();
         let full: i64 = self_full + other_full;
+        let numerator: i32 = (full / 100).try_into().unwrap_or(0);
+        let denominator: u8 = (full.abs() % 100).try_into().unwrap_or(0);
+        Self {
+            numerator,
+            denominator,
+        }
+    }
+}
+
+impl Div<i32> for ExactFloat {
+    type Output = i32;
+
+    fn div(self, other: i32) -> i32 {
+        self.numerator / other
+    }
+}
+
+impl Mul<i64> for ExactFloat {
+    type Output = Self;
+
+    fn mul(self, other: i64) -> Self {
+        let full = self.full();
+        let full = full * other;
         let numerator: i32 = (full / 100).try_into().unwrap_or(0);
         let denominator: u8 = (full.abs() % 100).try_into().unwrap_or(0);
         Self {

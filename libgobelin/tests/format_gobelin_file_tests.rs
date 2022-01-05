@@ -470,13 +470,13 @@ fn it_should_format_correctly_balance_by_category() {
                     },
                     Transaction {
                         date: NaiveDate::from_ymd(1, 11, 3),
-                        amount: ExactFloat::new(-29, 99),
+                        amount: ExactFloat::new(-49, 99),
                         description: String::from("internet"),
                         tag: Some(String::from("telecom")),
                     },
                     Transaction {
                         date: NaiveDate::from_ymd(1, 11, 3),
-                        amount: ExactFloat::new(-19, 99),
+                        amount: ExactFloat::new(-49, 99),
                         description: String::from("mobile"),
                         tag: Some(String::from("telecom")),
                     },
@@ -509,7 +509,7 @@ fn it_should_format_correctly_balance_by_category() {
             },
             Balance {
                 name: String::from("telecom"),
-                amount: ExactFloat::new(-49, 98),
+                amount: ExactFloat::new(-99, 98),
             },
         ],
     };
@@ -522,8 +522,8 @@ fn it_should_format_correctly_balance_by_category() {
 
 01/11 + 1 800    salary   [salary]
 02/11 -   200    savings  [<=>]
-03/11 -    29.99 internet [telecom]
-03/11 -    19.99 mobile   [telecom]
+03/11 -    49.99 internet [telecom]
+03/11 -    49.99 mobile   [telecom]
 
 ### Savings account
 
@@ -536,8 +536,8 @@ fn it_should_format_correctly_balance_by_category() {
 
 ## Balance by category
 
-- salary  = + 1 800
-- telecom = -    49.98
+- salary  = + 1 800    100%                     |████████████████████
+- telecom = -    99.98  -5%                    █|                    
 ",
     );
     assert_eq!(format_gobelin_file(&config, &file), Ok(expected));
