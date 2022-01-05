@@ -4,6 +4,8 @@ on:
   push:
     tags:
       - "v*.*.*"
+    branches:
+      - develop
   pull_request:
 
 jobs:
@@ -76,7 +78,9 @@ jobs:
       - name: Get the version
         id: get_version
         shell: bash
-        run: echo ::set-output name=VERSION::${GITHUB_REF#refs/tags/}
+        run: |
+          echo ::set-output name=VERSION_NO_TAG::${GITHUB_REF#refs/tags/}
+          echo ::set-output name=VERSION::${VERSION_NO_TAG#refs/heads/}
 
       - name: Setup | Rust
         uses: ATiltedTree/setup-rust@v1
