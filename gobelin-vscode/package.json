@@ -3,6 +3,7 @@
   "displayName": "Gobelin helper",
   "description": "Gobelin integration for VSCode.",
   "version": "1.1.0",
+  "publisher": "kuroidoruido",
   "repository": {
 	  "url": "https://github.com/kuroidoruido/Gobelin"
   },

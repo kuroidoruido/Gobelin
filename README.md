@@ -5,6 +5,7 @@ Gobelin is a text based personal accounting system.
 
 - gobelin: CLI interface for libgobelin
 - libgobelin: tool lib to format, edit, update, (re)compute everthing over all files
+- gobelin-vscode: VSCode extension (available for [VSCode](https://marketplace.visualstudio.com/items?itemName=kuroidoruido.gobelin-vscode) and [VSCodium and other compatible editor](https://open-vsx.org/extension/kuroidoruido/gobelin-vscode))
 
 ## Gobelin usage
 
