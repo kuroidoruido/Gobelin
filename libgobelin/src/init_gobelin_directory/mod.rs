@@ -10,10 +10,10 @@ pub fn init_gobelin_directory(
     locale: Option<Locale>,
     year: i32,
     month: u32,
+    add_vscode_config: bool,
 ) -> Result<BTreeMap<String, String>, String> {
     let (accounts, locale) = default_parameters(accounts, locale)?;
-
-    Ok(BTreeMap::from([
+    let mut files = BTreeMap::from([
         (
             String::from("gobelin.toml"),
             build_gobelin_toml(&accounts, locale)?,
@@ -22,7 +22,33 @@ pub fn init_gobelin_directory(
             format!("{}/{}.gobelin", year, month),
             build_month_file(&accounts, locale, year, month)?,
         ),
-    ]))
+    ]);
+
+    if add_vscode_config {
+        files.insert(
+            String::from(".vscode/extensions.json"),
+            String::from(
+                r#"{
+    "recommendations": [
+        "kuroidoruido.gobelin-vscode"
+    ]
+}"#,
+            ),
+        );
+        files.insert(
+            String::from(".vscode/settings.json"),
+            String::from(
+                r#"{
+    "[gobelin-lang]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "kuroidoruido.gobelin-vscode"
+    }
+}"#,
+            ),
+        );
+    }
+
+    Ok(files)
 }
 
 fn default_parameters(

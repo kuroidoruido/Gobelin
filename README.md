@@ -63,6 +63,16 @@ Example:
 gobelin init --locale FR
 ```
 
+#### vscode
+
+This will add some configuration to have a better VSCode integration.
+
+Example:
+
+```sh
+gobelin init --vscode
+```
+
 #### verbose
 
 This will give some indication about what Gobelin will do.

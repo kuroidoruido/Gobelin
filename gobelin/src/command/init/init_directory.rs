@@ -7,6 +7,7 @@ pub fn init_directory(
     root: &Option<PathBuf>,
     accounts: &[String],
     locale: Option<Locale>,
+    add_vscode_config: bool,
     verbose: bool,
 ) -> Result<(), String> {
     let root = root.clone().or_else(|| Some(PathBuf::from("."))).unwrap();
@@ -19,7 +20,7 @@ pub fn init_directory(
     }
 
     let (year, month) = todays_year_month();
-    let files = init_gobelin_directory(accounts, locale, year, month)?;
+    let files = init_gobelin_directory(accounts, locale, year, month, add_vscode_config)?;
     if verbose {
         println!(
             "Will create following files: {:?}",

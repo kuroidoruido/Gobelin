@@ -1,0 +1,6 @@
+{
+    "[gobelin-lang]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "kuroidoruido.gobelin-vscode"
+    }
+}

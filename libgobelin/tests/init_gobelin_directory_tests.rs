@@ -3,10 +3,24 @@ use libgobelin::{init_gobelin_directory, Locale};
 #[test]
 fn it_should_create_all_need_files() {
     let accounts: Vec<String> = Vec::new();
-    let actual = init_gobelin_directory(&accounts, None, 2021, 12).unwrap();
+    let actual = init_gobelin_directory(&accounts, None, 2021, 12, false).unwrap();
     assert_eq!(
         actual.into_keys().collect::<Vec<String>>(),
         vec![
+            String::from("2021/12.gobelin"),
+            String::from("gobelin.toml"),
+        ]
+    );
+}
+#[test]
+fn it_should_create_vscode_files_if_wanted() {
+    let accounts: Vec<String> = Vec::new();
+    let actual = init_gobelin_directory(&accounts, None, 2021, 12, true).unwrap();
+    assert_eq!(
+        actual.into_keys().collect::<Vec<String>>(),
+        vec![
+            String::from(".vscode/extensions.json"),
+            String::from(".vscode/settings.json"),
             String::from("2021/12.gobelin"),
             String::from("gobelin.toml"),
         ]
@@ -19,7 +33,7 @@ mod gobelin_toml {
     #[test]
     fn it_should_create_gobelin_toml_correctly_by_default() {
         let accounts: Vec<String> = Vec::new();
-        let actual = init_gobelin_directory(&accounts, None, 2021, 12).unwrap();
+        let actual = init_gobelin_directory(&accounts, None, 2021, 12, false).unwrap();
         assert_eq!(
             actual.get(&String::from("gobelin.toml")),
             Some(&String::from(
@@ -39,7 +53,7 @@ name = \"Main account\"
     #[test]
     fn it_should_create_gobelin_toml_correctly_with_only_locale() {
         let accounts: Vec<String> = Vec::new();
-        let actual = init_gobelin_directory(&accounts, Some(Locale::FR), 2021, 12).unwrap();
+        let actual = init_gobelin_directory(&accounts, Some(Locale::FR), 2021, 12, false).unwrap();
         assert_eq!(
             actual.get(&String::from("gobelin.toml")),
             Some(&String::from(
@@ -60,7 +74,7 @@ name = \"Compte principal\"
     fn it_should_create_gobelin_toml_correctly_without_locale() {
         let accounts: Vec<String> =
             vec![String::from("Compte principal"), String::from("Livret 1")];
-        let actual = init_gobelin_directory(&accounts, None, 2021, 12).unwrap();
+        let actual = init_gobelin_directory(&accounts, None, 2021, 12, false).unwrap();
         assert_eq!(
             actual.get(&String::from("gobelin.toml")),
             Some(&String::from(
@@ -84,7 +98,7 @@ name = \"Livret 1\"
     fn it_should_create_gobelin_toml_correctly_with_all_parameters() {
         let accounts: Vec<String> =
             vec![String::from("Compte principal"), String::from("Livret 1")];
-        let actual = init_gobelin_directory(&accounts, Some(Locale::FR), 2021, 12).unwrap();
+        let actual = init_gobelin_directory(&accounts, Some(Locale::FR), 2021, 12, false).unwrap();
         assert_eq!(
             actual.get(&String::from("gobelin.toml")),
             Some(&String::from(
@@ -111,7 +125,7 @@ mod month_file {
     #[test]
     fn it_should_create_month_file_correctly_by_default() {
         let accounts: Vec<String> = Vec::new();
-        let actual = init_gobelin_directory(&accounts, None, 2021, 12).unwrap();
+        let actual = init_gobelin_directory(&accounts, None, 2021, 12, false).unwrap();
         assert_eq!(
             actual.get(&String::from("2021/12.gobelin")),
             Some(&String::from(
@@ -134,7 +148,7 @@ mod month_file {
     #[test]
     fn it_should_create_month_file_correctly_with_locale_only() {
         let accounts: Vec<String> = Vec::new();
-        let actual = init_gobelin_directory(&accounts, Some(Locale::FR), 2021, 12).unwrap();
+        let actual = init_gobelin_directory(&accounts, Some(Locale::FR), 2021, 12, false).unwrap();
         assert_eq!(
             actual.get(&String::from("2021/12.gobelin")),
             Some(&String::from(
@@ -158,7 +172,7 @@ mod month_file {
     fn it_should_create_month_file_correctly_without_locale() {
         let accounts: Vec<String> =
             vec![String::from("Compte principal"), String::from("Livret 1")];
-        let actual = init_gobelin_directory(&accounts, None, 2021, 12).unwrap();
+        let actual = init_gobelin_directory(&accounts, None, 2021, 12, false).unwrap();
         assert_eq!(
             actual.get(&String::from("2021/12.gobelin")),
             Some(&String::from(
@@ -187,7 +201,7 @@ mod month_file {
     fn it_should_create_month_file_correctly_with_all_parameters() {
         let accounts: Vec<String> =
             vec![String::from("Compte principal"), String::from("Livret 1")];
-        let actual = init_gobelin_directory(&accounts, Some(Locale::FR), 2021, 12).unwrap();
+        let actual = init_gobelin_directory(&accounts, Some(Locale::FR), 2021, 12, false).unwrap();
         assert_eq!(
             actual.get(&String::from("2021/12.gobelin")),
             Some(&String::from(
@@ -208,6 +222,40 @@ mod month_file {
 - Compte principal = + 100.01
 - Livret 1         = + 100.02
 "
+            ))
+        );
+    }
+}
+
+mod dot_vscode {
+    use super::*;
+    #[test]
+    fn it_should_add_correct_dot_vscode_extensions_json_file() {
+        let actual = init_gobelin_directory(&vec![], Some(Locale::FR), 2021, 12, true).unwrap();
+        assert_eq!(
+            actual.get(&String::from(".vscode/extensions.json")),
+            Some(&String::from(
+                r#"{
+    "recommendations": [
+        "kuroidoruido.gobelin-vscode"
+    ]
+}"#
+            ))
+        );
+    }
+
+    #[test]
+    fn it_should_add_correct_dot_vscode_settings_json_file() {
+        let actual = init_gobelin_directory(&vec![], Some(Locale::FR), 2021, 12, true).unwrap();
+        assert_eq!(
+            actual.get(&String::from(".vscode/settings.json")),
+            Some(&String::from(
+                r#"{
+    "[gobelin-lang]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "kuroidoruido.gobelin-vscode"
+    }
+}"#
             ))
         );
     }

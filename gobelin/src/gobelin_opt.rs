@@ -27,6 +27,8 @@ pub enum Command {
         locale: Option<Locale>,
         #[structopt(short = "-a", long = "--account")]
         accounts: Vec<String>,
+        #[structopt(long)]
+        vscode: bool,
         #[structopt(short, long)]
         verbose: bool,
     },

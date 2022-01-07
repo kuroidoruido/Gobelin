@@ -26,8 +26,9 @@ fn main() -> Result<(), String> {
         Command::Init {
             accounts,
             locale,
+            vscode,
             verbose,
-        } => init_directory(&opt.root, &accounts, locale, verbose),
+        } => init_directory(&opt.root, &accounts, locale, vscode, verbose),
         Command::Update { verbose } => {
             let (config, _) = parse_config(&opt.root)?;
             update_all(&opt.root, &config, verbose)
