@@ -1,5 +1,15 @@
-import { commands, ExtensionContext, languages, window, workspace } from "vscode";
-import { exec } from 'child_process';
+import {
+  commands,
+  ExtensionContext,
+  languages,
+  Position,
+  Range,
+  TextEdit,
+  window,
+  workspace,
+  WorkspaceEdit,
+} from "vscode";
+import { execSync } from "child_process";
 
 export function activate(context: ExtensionContext) {
   console.log("Gobelin-vscode: activated");
@@ -9,43 +19,47 @@ export function activate(context: ExtensionContext) {
   command(context, "gobelin-vscode.add.month", async () => {
     const today = new Date();
     const yearAndMonth = await window.showInputBox({
-      value: `${today.getFullYear()} ${today.getMonth() < 9 ? `0${today.getMonth()+1}` : today.getMonth()+1}`,
+      value: `${today.getFullYear()} ${
+        today.getMonth() < 9 ? `0${today.getMonth() + 1}` : today.getMonth() + 1
+      }`,
       valueSelection: undefined,
       placeHolder: "Enter year and month you want. (exp: 2021 12)",
     });
-	if (yearAndMonth) {
-		addMonth(yearAndMonth);
-	}
+    if (yearAndMonth) {
+      addMonth(yearAndMonth);
+    }
   });
 }
 
 export function deactivate() {}
 
-function formatFile(path: string): void {
-  runGobelin(`fmt ${path} --verbose`);
+function formatFile(path: string): string | undefined {
+  return runGobelin(`fmt ${path} --stdout`);
 }
 
-function updateAllProject(): void {
+function updateAllProject(): string | undefined {
   runGobelin(`update --verbose`);
+  return undefined;
 }
 
-function addMonth(yearAndMonth: string): void {
+function addMonth(yearAndMonth: string): string | undefined {
   runGobelin(`add month ${yearAndMonth} --verbose`);
+  return undefined;
 }
 
-function runGobelin(cmd: string) {
+function runGobelin(cmd: string): string | undefined {
   const root = workspace.workspaceFolders?.[0].uri.path;
-	const gobelinCmd = `/usr/bin/gobelin ${root} ${cmd}`;
-	exec(gobelinCmd, (stderr, stdout) => {
-    if (stderr) {
-      console.error('Something goes wrong:',stderr);
-    } else {
-      console.error('Done:',stdout);
-    }
-  });
+  const gobelinCmd = `/usr/bin/gobelin ${root} ${cmd}`;
+  try {
+    const stdout = execSync(gobelinCmd, { encoding: 'utf8' });
+    console.error("Done:", stdout);
+    return stdout;
+  } catch (stderr) {
+    console.error("Something goes wrong:", stderr);
+  }
 }
 
-type CurrentFilePathCallback = (currentFilePath: string) => void;
+type CurrentFilePathCallback = (currentFilePath: string) => string | Promise<void> | void;
 
 function command(
   context: ExtensionContext,
@@ -58,7 +72,15 @@ function command(
       activeTextEditor &&
       activeTextEditor.document.languageId === "gobelin-lang"
     ) {
-      cb(activeTextEditor.document.uri.path);
+      const file = cb(activeTextEditor.document.uri.path);
+      if (typeof file === 'string') {
+        const document = activeTextEditor.document;
+        const lastLine = document.lineAt(document.lineCount-1);
+        const fullDocumentRange = new Range(new Position(0,0),new Position(document.lineCount-1,lastLine.text.length));
+        const edit = new WorkspaceEdit();
+        edit.replace(document.uri, fullDocumentRange, file);
+        return workspace.applyEdit(edit);
+      }
     }
   });
 
@@ -73,8 +95,14 @@ function formatter(
     "gobelin-lang",
     {
       provideDocumentFormattingEdits(document) {
-        cb(document.uri.path);
-        return [];
+        const file = cb(document.uri.path);
+        if (typeof file === 'string') {
+          const lastLine = document.lineAt(document.lineCount-1);
+          const fullDocumentRange = new Range(new Position(0,0),new Position(document.lineCount-1,lastLine.text.length));
+          return [TextEdit.replace(fullDocumentRange, file)];
+        } else {
+          return [];
+        }
       },
     }
   );

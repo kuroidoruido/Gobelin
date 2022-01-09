@@ -19,6 +19,8 @@ pub enum Command {
     Fmt {
         #[structopt(parse(from_os_str))]
         files: Vec<PathBuf>,
+        #[structopt(long)]
+        stdout: bool,
         #[structopt(short, long)]
         verbose: bool,
     },

@@ -122,6 +122,18 @@ gobelin fmt 2021/12.gobelin
 gobelin fmt 2021/11.gobelin 2021/12.gobelin
 ```
 
+#### stdout
+
+This will print on stdout the formatted file and no more write it on disk. 
+
+Note: This option imply verbose to be disabled.
+
+Example:
+
+```sh
+gobelin fmt 2021/11.gobelin --stdout
+```
+
 #### verbose
 
 This will give some indication about what Gobelin will do.

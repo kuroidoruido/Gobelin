@@ -19,9 +19,13 @@ fn main() -> Result<(), String> {
         .unwrap();
     match cmd {
         Command::Add { add_cmd } => add_sub_command(opt.root, add_cmd),
-        Command::Fmt { files, verbose } => {
+        Command::Fmt {
+            files,
+            stdout,
+            verbose,
+        } => {
             let (config, _) = parse_config(&opt.root)?;
-            format_files(&config, &files, verbose)
+            format_files(&config, &files, stdout, verbose)
         }
         Command::Init {
             accounts,
